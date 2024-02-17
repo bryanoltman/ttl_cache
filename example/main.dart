@@ -17,20 +17,20 @@ Future<void> main() async {
   cache.set('hello', 'world', ttl: const Duration(seconds: 2));
 
   print('initial state:');
-  print('foo: ${cache['foo']}');
-  print('hello: ${cache.get('hello')}');
+  print('foo: ${cache['foo']}'); // 'bar'
+  print('hello: ${cache.get('hello')}'); // 'world'
   print('');
 
   await Future<void>.delayed(const Duration(seconds: 1));
 
   print('after 1 second:');
-  print('foo: ${cache['foo']}');
-  print('hello: ${cache.get('hello')}');
+  print('foo: ${cache['foo']}'); // null
+  print('hello: ${cache.get('hello')}'); // 'world'
   print('');
 
   await Future<void>.delayed(const Duration(seconds: 1));
 
   print('after 2 seconds:');
-  print('foo: ${cache['foo']}');
-  print('hello: ${cache.get('hello')}');
+  print('foo: ${cache['foo']}'); // null
+  print('hello: ${cache.get('hello')}'); // null
 }
