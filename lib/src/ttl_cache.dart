@@ -17,8 +17,9 @@ class TtlCache<K, V> {
   /// Maps keys to their expiration times.
   final _expirations = <K, DateTime>{};
 
-  /// Adds a key-value pair to the cache that expires after [ttl]. If no [ttl]
-  /// is provided, the entry will never expire.
+  /// Associates [key] with [value] in the cache, using [ttl] as the TTL. If
+  /// [ttl] is not provided, this cache's [defaultTtl] will be used. Entires
+  /// having a null TTL will never expire.
   void set(K key, V value, {Duration? ttl}) {
     _cache[key] = value;
 
@@ -44,6 +45,16 @@ class TtlCache<K, V> {
     _expirations.remove(key);
   }
 
+  /// All entries in the cache.
+  Iterable<MapEntry<K, V>> get entries =>
+      _cache.entries.where((entry) => !_isExpired(entry.key));
+
+  /// All keys in the cache.
+  Iterable<K> get keys => entries.map((entry) => entry.key);
+
+  /// All values in the cache.
+  Iterable<V> get values => entries.map((entry) => entry.value);
+
   /// Returns the expiration time of the entry associated with [key] if the key
   /// exists and has a TTL.
   DateTime? getExpiration(K key) {
@@ -57,11 +68,17 @@ class TtlCache<K, V> {
   /// Associates [key] with [value] in the cache, using [defaultTtl] as the TTL.
   void operator []=(K key, V value) => set(key, value);
 
+  /// Returns true if the entry for [key] exists and has an expiration date in
+  /// the past.
+  bool _isExpired(K key) {
+    final expiration = _expirations[key];
+    return expiration != null && clock.now().isAfter(expiration);
+  }
+
   /// Removes the entry for [key] if it exists and has an expiration date in the
   /// past.
   void _removeIfExpired(K key) {
-    final expiration = _expirations[key];
-    if (expiration != null && clock.now().isAfter(expiration)) {
+    if (_isExpired(key)) {
       _cache.remove(key);
       _expirations.remove(key);
     }

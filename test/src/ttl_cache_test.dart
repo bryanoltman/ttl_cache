@@ -36,12 +36,15 @@ void main() {
         withClock(Clock(() => time), () {
           final cache =
               TtlCache<String, String>(defaultTtl: Duration(seconds: 1));
+
           cache['foo'] = 'bar';
           cache.set('hello', 'world', ttl: Duration(seconds: 2));
 
           final fooExpiration = time.add(Duration(seconds: 1));
           final helloExpiration = time.add(Duration(seconds: 2));
 
+          expect(cache.keys, equals(['foo', 'hello']));
+          expect(cache.values, equals(['bar', 'world']));
           expect(cache['foo'], equals('bar'));
           expect(cache.get('hello'), equals('world'));
           expect(cache.getExpiration('foo'), equals(fooExpiration));
@@ -50,6 +53,8 @@ void main() {
           time = time.add(Duration(seconds: 1));
           // Both entries should still be in the cache. 'foo' is at but not past
           // its expiration time.
+          expect(cache.keys, equals(['foo', 'hello']));
+          expect(cache.values, equals(['bar', 'world']));
           expect(cache['foo'], equals('bar'));
           expect(cache.get('hello'), equals('world'));
           expect(cache.getExpiration('foo'), equals(fooExpiration));
@@ -58,6 +63,8 @@ void main() {
           time = time.add(Duration(seconds: 1));
           // 'foo' should be expired now, but 'hello' should still be in the
           // cache.
+          expect(cache.keys, equals(['hello']));
+          expect(cache.values, equals(['world']));
           expect(cache['foo'], isNull);
           expect(cache.get('hello'), equals('world'));
           expect(cache.getExpiration('foo'), isNull);
@@ -65,6 +72,8 @@ void main() {
 
           time = time.add(Duration(seconds: 1));
           // Both keys should be expired now.
+          expect(cache.keys, isEmpty);
+          expect(cache.values, isEmpty);
           expect(cache['foo'], isNull);
           expect(cache.get('hello'), isNull);
           expect(cache.getExpiration('foo'), isNull);
