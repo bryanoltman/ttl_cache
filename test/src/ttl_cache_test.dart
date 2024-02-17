@@ -51,18 +51,8 @@ void main() {
           expect(cache.getExpiration('hello'), equals(helloExpiration));
 
           time = time.add(Duration(seconds: 1));
-          // Both entries should still be in the cache. 'foo' is at but not past
-          // its expiration time.
-          expect(cache.keys, equals(['foo', 'hello']));
-          expect(cache.values, equals(['bar', 'world']));
-          expect(cache['foo'], equals('bar'));
-          expect(cache.get('hello'), equals('world'));
-          expect(cache.getExpiration('foo'), equals(fooExpiration));
-          expect(cache.getExpiration('hello'), equals(helloExpiration));
-
-          time = time.add(Duration(seconds: 1));
-          // 'foo' should be expired now, but 'hello' should still be in the
-          // cache.
+          // 'foo' is at its expiration time and should no longer in the cache.
+          // 'hello' is not yet expired and should still be in the cache.
           expect(cache.keys, equals(['hello']));
           expect(cache.values, equals(['world']));
           expect(cache['foo'], isNull);

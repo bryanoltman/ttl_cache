@@ -72,7 +72,7 @@ class TtlCache<K, V> {
   /// the past.
   bool _isExpired(K key) {
     final expiration = _expirations[key];
-    return expiration != null && clock.now().isAfter(expiration);
+    return expiration != null && !expiration.isAfter(clock.now());
   }
 
   /// Removes the entry for [key] if it exists and has an expiration date in the
