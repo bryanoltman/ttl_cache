@@ -1,5 +1,6 @@
 name: ttl_cache
 description: A simple key-value store with entry expiration
+repository: https://github.com/bryanoltman/ttl_cache
 version: 0.1.0+1
 
 environment:
