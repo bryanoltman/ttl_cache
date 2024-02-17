@@ -1,3 +1,4 @@
 # 0.1.0+1
 
-- feat: initial commit 🎉
+- Initial release. Introduces the `TtlCache` class, which is a simple key-value
+  store whose entires expire after a user-defined time-to-live (TTL).
