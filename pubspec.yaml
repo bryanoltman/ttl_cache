@@ -1,7 +1,7 @@
 name: ttl_cache
 description: A simple key-value store whose entires expire after a user-defined time-to-live (TTL)
 repository: https://github.com/bryanoltman/ttl_cache
-version: 0.1.1
+version: 0.2.0
 
 environment:
   sdk: ">=3.0.0 <4.0.0"

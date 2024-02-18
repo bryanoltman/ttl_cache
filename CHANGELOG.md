@@ -1,3 +1,7 @@
+# 0.2.0
+
+- Add containsKey method
+
 # 0.1.1
 
 - Add example
