@@ -55,6 +55,9 @@ class TtlCache<K, V> {
   /// All values in the cache.
   Iterable<V> get values => entries.map((entry) => entry.value);
 
+  /// Whether [key] exists in the cache.
+  bool containsKey(K key) => get(key) != null;
+
   /// Returns the expiration time of the entry associated with [key] if the key
   /// exists and has a TTL.
   DateTime? getExpiration(K key) {

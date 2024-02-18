@@ -88,5 +88,26 @@ void main() {
         });
       });
     });
+
+    group('containsKey', () {
+      test('returns true if entry exists and has not expired', () {
+        var time = DateTime(2021);
+        withClock(Clock(() => time), () {
+          final cache = TtlCache<int, int>(defaultTtl: Duration(minutes: 1));
+          cache[1] = 1;
+          cache.set(2, 2, ttl: Duration(minutes: 2));
+
+          expect(cache.containsKey(1), isTrue);
+          expect(cache.containsKey(2), isTrue);
+          expect(cache.containsKey(3), isFalse);
+
+          time = time.add(Duration(minutes: 2));
+
+          expect(cache.containsKey(1), isFalse);
+          expect(cache.containsKey(2), isFalse);
+          expect(cache.containsKey(3), isFalse);
+        });
+      });
+    });
   });
 }
