@@ -109,5 +109,19 @@ void main() {
         });
       });
     });
+
+    group('clear', () {
+      test('removes all entries', () {
+        final cache = TtlCache<int, int>(defaultTtl: Duration(minutes: 1));
+        cache[1] = 1;
+        cache.set(2, 2, ttl: Duration(minutes: 2));
+
+        expect(cache.entries, hasLength(2));
+
+        cache.clear();
+
+        expect(cache.entries, isEmpty);
+      });
+    });
   });
 }

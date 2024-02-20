@@ -45,6 +45,12 @@ class TtlCache<K, V> {
     _expirations.remove(key);
   }
 
+  /// Removes all entries from the cache.
+  void clear() {
+    _cache.clear();
+    _expirations.clear();
+  }
+
   /// All entries in the cache.
   Iterable<MapEntry<K, V>> get entries =>
       _cache.entries.where((entry) => !_isExpired(entry.key));
