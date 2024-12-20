@@ -1,3 +1,4 @@
+// Ignoring const constructors because this is a test.
 // ignore_for_file: prefer_const_constructors
 
 import 'package:clock/clock.dart';
